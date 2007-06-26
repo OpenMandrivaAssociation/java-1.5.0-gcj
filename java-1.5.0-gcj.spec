@@ -44,7 +44,6 @@ Source0:	ftp://sources.redhat.com/pub/rhug/java-gcj-compat-%{jgcver}.tar.bz2
 Patch1:		java-1.4.2-gcj-compat-aot-compile-rpm.patch
 # (anssi) fix --exclude when buildroot contains ending slash:
 Patch2:		java-1.4.2-gcj-compat-aotcompile-normpath.patch
-Patch3:		java-1.4.2-gcj-compat-no-hardcoded-jar-versions.patch
 # Add only .so linked to correct libgcj_bc.so during rebuild-gcj-db,
 # to avoid gij failure with non-rebuilt packages
 Patch4:		java-1.5.0-gcj-ensure-soname-compat.patch
@@ -218,7 +217,6 @@ This package installs gcjwebplugin, a Mozilla plugin for applets.
 
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 %patch4 -p1
 # (anssi) for patch4:
 GCJ_BC_MAJOR=$(objdump -p $(gcj%gccsuffix -print-file-name=libgcj_bc.so) | \
