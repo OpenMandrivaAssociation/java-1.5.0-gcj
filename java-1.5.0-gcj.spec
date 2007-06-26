@@ -368,7 +368,7 @@ ln -s $(gcj%{gccsuffix} -print-file-name=include/jni_md.h) %{buildroot}%{_jvmdir
 
 pushd $RPM_BUILD_ROOT%{_jvmdir}/%{sdkdir}/jre/lib
   for jarname in jaas jce jdbc-stdext jndi jndi-cos jndi-dns \
-    jndi-ldap jndi-rmi jsse sasl jta jaxp_parser_impl
+    jndi-ldap jndi-rmi jsse sasl jta
   do
     ln -s rt.jar $jarname.jar
   done
@@ -509,6 +509,7 @@ fi
 %{_jvmdir}/%{jredir}/lib/jndi-ldap.jar
 %{_jvmdir}/%{jredir}/lib/jndi-rmi.jar
 %{_jvmdir}/%{jredir}/lib/jndi.jar
+%{_jvmdir}/%{jredir}/lib/jta.jar
 %{_jvmdir}/%{jredir}/lib/jsse.jar
 %{_jvmdir}/%{jredir}/lib/sasl.jar
 %ifarch x86_64
