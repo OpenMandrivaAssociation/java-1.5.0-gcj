@@ -2,7 +2,7 @@
 # with => disabled by default
 # without => enabled by default
 
-%bcond_with             bootstrap
+%bcond_without          bootstrap
 %bcond_with             plugin
 
 %define section		free
