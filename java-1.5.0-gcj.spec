@@ -2,7 +2,7 @@
 # with => disabled by default
 # without => enabled by default
 
-%bcond_without          bootstrap
+%bcond_with             bootstrap
 %bcond_with             plugin
 
 %define section		free
@@ -34,7 +34,7 @@
 
 Name:		%{name}
 Version:	%{javaver}.%{buildver}
-Release:	%mkrel 14.1
+Release:	%mkrel 14.2
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
