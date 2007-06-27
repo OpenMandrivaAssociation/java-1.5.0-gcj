@@ -56,6 +56,7 @@ BuildRequires: libgcj%{gccsoversion}-src
 # required for cacerts generation
 BuildRequires: openssl
 BuildRequires: python-devel
+BuildRequires: jpackage-utils
 %if %without bootstrap
 BuildRequires: sinjdoc
 %endif
