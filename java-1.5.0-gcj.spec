@@ -68,8 +68,7 @@ Requires:         jpackage-utils >= 1.7.3
 Requires(post):	jpackage-utils
 Requires(postun): jpackage-utils
 
-Requires:	update-alternatives
-Requires(post):	update-alternatives
+Requires(post):	update-alternatives >= 1.8.6
 Requires(postun):	update-alternatives
 
 # standard JPackage base provides
@@ -122,7 +121,7 @@ Requires:         %{name} = %{version}-%{release}
 # require python for aot-compile
 Requires:         python
 # post requires alternatives to install tool alternatives
-Requires(post):   update-alternatives
+Requires(post):   update-alternatives >= 1.8.6
 # postun requires alternatives to uninstall tool alternatives
 Requires(postun): update-alternatives
 
