@@ -34,7 +34,7 @@
 
 Name:		%{name}
 Version:	%{javaver}.%{buildver}
-Release:	%mkrel 14.2
+Release:	%mkrel 14.3
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
@@ -125,6 +125,12 @@ Requires:         python
 Requires(post):   update-alternatives >= 1.8.6
 # postun requires alternatives to uninstall tool alternatives
 Requires(postun): update-alternatives
+
+%if %without bootstrap
+# required for javadoc symlink
+# (anssi) fedora has this in main package for no reason
+Requires: sinjdoc
+%endif
 
 # standard JPackage devel provides
 Provides: java-sdk-%{javaver}-%{origin} = %{version}
@@ -226,7 +232,7 @@ perl -pi -e "s,\@GCJ_BC_MAJOR\@,$GCJ_BC_MAJOR," rebuild-gcj-db.in
 # (anssi)
 perl -pi -e 's,gkeytool ,gkeytool%{gccsuffix} ,' generate-cacerts.pl
 perl -pi -e 's,gjarsigner ,gjarsigner%{gccsuffix} ,' Makefile.am
-perl -pi -e 's,appletviewer ,gappletviewer%{gccsuffix} ,' Makefile.am
+perl -pi -e 's,gappletviewer ,gappletviewer%{gccsuffix} ,' Makefile.am
 # (anssi) GCC4.2 contains gjar instead of fastjar
 perl -pi -e 's,fastjar,gjar,' Makefile.am
 
