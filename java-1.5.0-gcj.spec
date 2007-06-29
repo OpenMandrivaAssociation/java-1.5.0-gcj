@@ -34,7 +34,7 @@
 
 Name:		%{name}
 Version:	%{javaver}.%{buildver}
-Release:	%mkrel 14.4
+Release:	%mkrel 14.5
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
@@ -51,7 +51,6 @@ BuildRoot:	%{_tmppath}/%{name}-buildroot
 
 # required to calculate gcj binary's path to encode in aotcompile.py
 # and rebuild-gcj-db
-Requires:      gcc%{gccsuffix}-java
 BuildRequires: gcc%{gccsuffix}-java
 BuildRequires: libgcj%{gccsoversion}-src
 # required for cacerts generation
@@ -126,6 +125,8 @@ Requires:         python
 Requires(post):   update-alternatives >= 1.8.6
 # postun requires alternatives to uninstall tool alternatives
 Requires(postun): update-alternatives
+
+Requires:      gcc%{gccsuffix}-java
 
 %if %without bootstrap
 # required for javadoc symlink
