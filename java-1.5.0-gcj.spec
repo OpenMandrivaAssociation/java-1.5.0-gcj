@@ -34,7 +34,7 @@
 
 Name:		%{name}
 Version:	%{javaver}.%{buildver}
-Release:	%mkrel 14.5
+Release:	%mkrel 14.6
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
@@ -384,6 +384,14 @@ pushd $RPM_BUILD_ROOT%{_jvmdir}/%{sdkdir}/jre/lib
   done
 popd
 
+# (anssi)
+install -dm 755 %{buildroot}%{_sysconfdir}/rpm/macros.d
+cat > %{buildroot}%{_sysconfdir}/rpm/macros.d/%{name}.macros <<EOF
+# The GCJ that should be used when building packages with %{name}-devel
+%%gcj %{_bindir}/gcj%gccsuffix
+# The GCJ dbtool that should be used
+%%gcj_dbtool %{_bindir}/gcj-dbtool%gccsuffix
+EOF
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -581,6 +589,7 @@ fi
 
 %files devel
 %defattr(-,root,root,-)
+%{_sysconfdir}/rpm/macros.d/%{name}.macros
 %dir %{_jvmdir}/%{sdkdir}/bin
 %dir %{_jvmdir}/%{sdkdir}/include
 %dir %{_jvmdir}/%{sdkdir}/include/linux
