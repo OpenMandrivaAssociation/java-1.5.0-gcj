@@ -34,7 +34,7 @@
 
 Name:		%{name}
 Version:	%{javaver}.%{buildver}
-Release:	%mkrel 14.6
+Release:	%mkrel 14.7
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
@@ -376,6 +376,10 @@ ln -s $(gcj%{gccsuffix} -print-file-name=include/jni.h) %{buildroot}%{_jvmdir}/%
 ln -s $(gcj%{gccsuffix} -print-file-name=include/jawt_md.h) %{buildroot}%{_jvmdir}/%{sdkdir}/include/linux/jawt_md.h
 ln -s $(gcj%{gccsuffix} -print-file-name=include/jni_md.h) %{buildroot}%{_jvmdir}/%{sdkdir}/include/linux/jni_md.h
 
+# needed by jni_md.h (since gcj4.2 or gcj4.3):
+install -dm 755 $RPM_BUILD_ROOT%{_jvmdir}/%{sdkdir}/include/linux/gcj
+ln -s $(gcj%{gccsuffix} -print-file-name=include/gcj/libgcj-config.h) %{buildroot}%{_jvmdir}/%{sdkdir}/include/linux/gcj/libgcj-config.h
+
 pushd $RPM_BUILD_ROOT%{_jvmdir}/%{sdkdir}/jre/lib
   for jarname in jaas jce jdbc-stdext jndi jndi-cos jndi-dns \
     jndi-ldap jndi-rmi jsse sasl jta
@@ -615,6 +619,7 @@ fi
 %{_jvmdir}/%{sdkdir}/include/jni.h
 %{_jvmdir}/%{sdkdir}/include/linux/jawt_md.h
 %{_jvmdir}/%{sdkdir}/include/linux/jni_md.h
+%{_jvmdir}/%{sdkdir}/include/linux/gcj
 %{_jvmdir}/%{sdkdir}/lib/tools.jar
 
 %files src
