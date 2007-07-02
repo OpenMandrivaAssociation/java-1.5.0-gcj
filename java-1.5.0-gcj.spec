@@ -34,7 +34,7 @@
 
 Name:		%{name}
 Version:	%{javaver}.%{buildver}
-Release:	%mkrel 14.7
+Release:	%mkrel 14.8
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
@@ -94,7 +94,8 @@ Provides: jsse = %{version}-%{release}
 Provides: java-sasl = %{version}-%{release}
 Provides: jaxp_parser_impl = %{version}-%{release}
 # java-gcj-compat base provides
-Provides: java-gcj-compat = %{jgcver}
+# (anssi) added release
+Provides: java-gcj-compat = %{jgcver}-%{release}
 Provides: java-1.4.2-gcj-compat = 1.4.2.0-41
 
 # Mandriva added:
@@ -143,7 +144,8 @@ Provides: java-%{javaver}-devel = %{version}
 Provides: java-devel-%{origin} = %{version}
 Provides: java-devel = %{javaver}
 # java-gcj-compat devel provides
-Provides: java-gcj-compat-devel = %{jgcver}
+# (anssi) added release
+Provides: java-gcj-compat-devel = %{jgcver}-%{release}
 Provides: java-1.4.2-gcj-compat-devel = 1.4.2.0-41
 
 Obsoletes: java-1.4.2-gcj-compat-devel < 1.4.2.0-41
@@ -376,9 +378,15 @@ ln -s $(gcj%{gccsuffix} -print-file-name=include/jni.h) %{buildroot}%{_jvmdir}/%
 ln -s $(gcj%{gccsuffix} -print-file-name=include/jawt_md.h) %{buildroot}%{_jvmdir}/%{sdkdir}/include/linux/jawt_md.h
 ln -s $(gcj%{gccsuffix} -print-file-name=include/jni_md.h) %{buildroot}%{_jvmdir}/%{sdkdir}/include/linux/jni_md.h
 
-# needed by jni_md.h (since gcj4.2 or gcj4.3):
+# (anssi) needed by jni_md.h (since gcj4.2 or gcj4.3):
 install -dm 755 $RPM_BUILD_ROOT%{_jvmdir}/%{sdkdir}/include/linux/gcj
 ln -s $(gcj%{gccsuffix} -print-file-name=include/gcj/libgcj-config.h) %{buildroot}%{_jvmdir}/%{sdkdir}/include/linux/gcj/libgcj-config.h
+
+# (anssi) jni_md.h is included by jni.h, and at least OOo neglects to add
+# /linux to their includedir when GCJ is detected, as this is not normally
+# needed when the headers are in their normal location
+ln -s linux/gcj %{buildroot}%{_jvmdir}/%{sdkdir}/include/gcj
+ln -s linux/jni_md.h %{buildroot}%{_jvmdir}/%{sdkdir}/include/jni_md.h
 
 pushd $RPM_BUILD_ROOT%{_jvmdir}/%{sdkdir}/jre/lib
   for jarname in jaas jce jdbc-stdext jndi jndi-cos jndi-dns \
@@ -620,6 +628,8 @@ fi
 %{_jvmdir}/%{sdkdir}/include/linux/jawt_md.h
 %{_jvmdir}/%{sdkdir}/include/linux/jni_md.h
 %{_jvmdir}/%{sdkdir}/include/linux/gcj
+%{_jvmdir}/%{sdkdir}/include/gcj
+%{_jvmdir}/%{sdkdir}/include/jni_md.h
 %{_jvmdir}/%{sdkdir}/lib/tools.jar
 
 %files src
