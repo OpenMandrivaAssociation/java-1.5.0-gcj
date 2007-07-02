@@ -34,7 +34,7 @@
 
 Name:		%{name}
 Version:	%{javaver}.%{buildver}
-Release:	%mkrel 14.8
+Release:	%mkrel 14.9
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
@@ -382,11 +382,12 @@ ln -s $(gcj%{gccsuffix} -print-file-name=include/jni_md.h) %{buildroot}%{_jvmdir
 install -dm 755 $RPM_BUILD_ROOT%{_jvmdir}/%{sdkdir}/include/linux/gcj
 ln -s $(gcj%{gccsuffix} -print-file-name=include/gcj/libgcj-config.h) %{buildroot}%{_jvmdir}/%{sdkdir}/include/linux/gcj/libgcj-config.h
 
-# (anssi) jni_md.h is included by jni.h, and at least OOo neglects to add
-# /linux to their includedir when GCJ is detected, as this is not normally
-# needed when the headers are in their normal location
+# (anssi) Normally there is no need to do -I$JAVA_HOME/include/linux when
+# building with gcj. Therefore some software (OOo) may assume it is not
+# needed, thus these compatibility symlinks.
 ln -s linux/gcj %{buildroot}%{_jvmdir}/%{sdkdir}/include/gcj
 ln -s linux/jni_md.h %{buildroot}%{_jvmdir}/%{sdkdir}/include/jni_md.h
+ln -s linux/jawt_md.h %{buildroot}%{_jvmdir}/%{sdkdir}/include/jawt_md.h
 
 pushd $RPM_BUILD_ROOT%{_jvmdir}/%{sdkdir}/jre/lib
   for jarname in jaas jce jdbc-stdext jndi jndi-cos jndi-dns \
@@ -630,6 +631,7 @@ fi
 %{_jvmdir}/%{sdkdir}/include/linux/gcj
 %{_jvmdir}/%{sdkdir}/include/gcj
 %{_jvmdir}/%{sdkdir}/include/jni_md.h
+%{_jvmdir}/%{sdkdir}/include/jawt_md.h
 %{_jvmdir}/%{sdkdir}/lib/tools.jar
 
 %files src
