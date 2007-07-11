@@ -34,7 +34,7 @@
 
 Name:		%{name}
 Version:	%{javaver}.%{buildver}
-Release:	%mkrel 14.9
+Release:	%mkrel 14.10
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
@@ -64,6 +64,8 @@ BuildRequires: sinjdoc
 # required for tools and libgcj.jar
 Requires:         libgcj%{gccsoversion}-base >= %{gccver}
 Requires:         gcj%{gccsuffix}-tools >= %{gccver}
+# XXX: this might not be the right place for it, but it needs to be somewhere
+Requires:         bouncycastle
 # required for directory structures
 Requires:         jpackage-utils >= 1.7.3
 Requires(post):	jpackage-utils
@@ -97,6 +99,7 @@ Provides: jaxp_parser_impl = %{version}-%{release}
 # (anssi) added release
 Provides: java-gcj-compat = %{jgcver}-%{release}
 Provides: java-1.4.2-gcj-compat = 1.4.2.0-41
+Provides: java-1.5.0-gcj-compat = 1.5.0
 
 # Mandriva added:
 Provides: jaxp_transform_impl = %{version}-%{release}
