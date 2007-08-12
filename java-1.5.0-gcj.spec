@@ -34,7 +34,7 @@
 
 Name:		%{name}
 Version:	%{javaver}.%{buildver}
-Release:	%mkrel 14.10
+Release:	%mkrel 14.11
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
@@ -283,7 +283,7 @@ popd
 
 # security directory and provider list
 install -dm 755 $RPM_BUILD_ROOT%{_jvmdir}/%{jredir}/lib/security
-ln -sf %{_libdir}/security/classpath.security $RPM_BUILD_ROOT%{_jvmdir}/%{jredir}/lib/security/java.security
+ln -sf %{_prefix}/lib/security/classpath.security $RPM_BUILD_ROOT%{_jvmdir}/%{jredir}/lib/security/java.security
 
 %if 0
 # (anssi) we have those in jpackage-utils
