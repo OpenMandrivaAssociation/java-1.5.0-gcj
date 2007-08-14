@@ -34,7 +34,7 @@
 
 Name:		%{name}
 Version:	%{javaver}.%{buildver}
-Release:	%mkrel 14.11
+Release:	%mkrel 14.12
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
@@ -363,6 +363,9 @@ install -dm 755 $RPM_BUILD_ROOT%{_jvmdir}/%{sdkdir}/include/linux
 install -dm 755 $RPM_BUILD_ROOT%{_jvmdir}/%{jredir}/lib/%{_arch}/client
 install -dm 755 $RPM_BUILD_ROOT%{_jvmdir}/%{jredir}/lib/%{_arch}/server
 
+# install native_threads directory
+%{__mkdir_p} %{buildroot}%{_jvmdir}/%{jredir}/lib/%{_arch}/native_threads
+
 # install tools.jar directory
 install -dm 755 $RPM_BUILD_ROOT%{_jvmdir}/%{sdkdir}/lib
 
@@ -374,6 +377,7 @@ ln -s %{_javadir}/libgcj-%{gccver}.jar %{buildroot}%{_jvmdir}/%{sdkdir}/jre/lib/
 ln -s %{_libdir}/gcj-%{gccver}/libjawt.so %{buildroot}%{_jvmdir}/%{jredir}/lib/%{_arch}/libjawt.so
 ln -s %{_libdir}/gcj-%{gccver}/libjvm.so %{buildroot}%{_jvmdir}/%{jredir}/lib/%{_arch}/client/libjvm.so
 ln -s %{_libdir}/gcj-%{gccver}/libjvm.so %{buildroot}%{_jvmdir}/%{jredir}/lib/%{_arch}/server/libjvm.so
+ln -s %{_libdir}/gcj-%{gccver}/libjvm.so %{buildroot}%{_jvmdir}/%{jredir}/lib/%{_arch}/native_threads/libhpi.so
 # devel
 ln -s %{_javadir}/libgcj-tools-%{gccver}.jar %{buildroot}%{_jvmdir}/%{sdkdir}/lib/tools.jar
 ln -s $(gcj%{gccsuffix} -print-file-name=include/jawt.h) %{buildroot}%{_jvmdir}/%{sdkdir}/include/jawt.h
@@ -588,6 +592,7 @@ fi
 %{_jvmdir}/%{jredir}/lib/%{_arch}/libjawt.so
 %{_jvmdir}/%{jredir}/lib/%{_arch}/client/libjvm.so
 %{_jvmdir}/%{jredir}/lib/%{_arch}/server/libjvm.so
+%{_jvmdir}/%{jredir}/lib/%{_arch}/native_threads/libhpi.so
 # these must not be marked %config(noreplace). their names are used by
 # rebuild-security-providers, which lists
 # %{_sysconfdir}/java/security/security.d/*.  their contents are
