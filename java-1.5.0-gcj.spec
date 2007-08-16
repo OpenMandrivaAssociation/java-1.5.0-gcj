@@ -34,7 +34,7 @@
 
 Name:		%{name}
 Version:	%{javaver}.%{buildver}
-Release:	%mkrel 14.12
+Release:	%mkrel 14.13
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
@@ -131,6 +131,8 @@ Requires(post):   update-alternatives >= 1.8.6
 Requires(postun): update-alternatives
 
 Requires:      gcc%{gccsuffix}-java
+
+Requires: fastjar
 
 %if %without bootstrap
 # required for javadoc symlink
@@ -241,7 +243,9 @@ perl -pi -e 's,gkeytool ,gkeytool%{gccsuffix} ,' generate-cacerts.pl
 perl -pi -e 's,gjarsigner ,gjarsigner%{gccsuffix} ,' Makefile.am
 perl -pi -e 's,gappletviewer ,gappletviewer%{gccsuffix} ,' Makefile.am
 # (anssi) GCC4.2 contains gjar instead of fastjar
-perl -pi -e 's,fastjar,gjar,' Makefile.am
+# we use external fastjar due to upstream classpath bug anyway:
+# http://gcc.gnu.org/bugzilla/show_bug.cgi?id=32516
+perl -pi -e 's,fastjar\$\(gcc_suffix\),fastjar,' Makefile.am
 
 %build
 aclocal
