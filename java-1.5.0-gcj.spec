@@ -34,7 +34,7 @@
 
 Name:		%{name}
 Version:	%{javaver}.%{buildver}
-Release:	%mkrel 14.13
+Release:	%mkrel 14.14
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
