@@ -34,13 +34,14 @@
 
 Name:		%{name}
 Version:	%{javaver}.%{buildver}
-Release:	%mkrel 14.14
+Release:	%mkrel 17.1
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
 License:	GPL
 URL:		http://sources.redhat.com/rhug/java-gcj-compat.html
 Source0:	ftp://sources.redhat.com/pub/rhug/java-gcj-compat-%{jgcver}.tar.bz2
+Patch0:		aot-compile-rpm.patch
 Patch1:		java-1.4.2-gcj-compat-aot-compile-rpm.patch
 # (anssi) fix --exclude when buildroot contains ending slash:
 Patch2:		java-1.4.2-gcj-compat-aotcompile-normpath.patch
@@ -229,7 +230,7 @@ This package installs gcjwebplugin, a Mozilla plugin for applets.
 
 %prep
 %setup -q -n java-gcj-compat-%{jgcver}
-
+%patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch4 -p1
