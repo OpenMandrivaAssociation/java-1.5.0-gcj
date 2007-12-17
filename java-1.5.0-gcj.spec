@@ -48,7 +48,6 @@ Patch2:		java-1.4.2-gcj-compat-aotcompile-normpath.patch
 # Add only .so linked to correct libgcj_bc.so during rebuild-gcj-db,
 # to avoid gij failure with non-rebuilt packages
 Patch4:		java-1.5.0-gcj-ensure-soname-compat.patch
-BuildRoot:	%{_tmppath}/%{name}-buildroot
 
 # required to calculate gcj binary's path to encode in aotcompile.py
 # and rebuild-gcj-db
