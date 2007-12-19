@@ -4,6 +4,7 @@
 
 %bcond_with             bootstrap
 %bcond_with             plugin
+%bcond_with             fastjar
 
 %define section		free
 
@@ -34,7 +35,7 @@
 
 Name:		%{name}
 Version:	%{javaver}.%{buildver}
-Release:	%mkrel 17.1.1
+Release:	%mkrel 17.1.2
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
@@ -132,7 +133,9 @@ Requires(postun): update-alternatives
 
 Requires:      gcc%{gccsuffix}-java
 
+%if %with fastjar
 Requires: fastjar
+%endif
 
 %if %without bootstrap
 # required for javadoc symlink
@@ -242,10 +245,15 @@ perl -pi -e "s,\@GCJ_BC_MAJOR\@,$GCJ_BC_MAJOR," rebuild-gcj-db.in
 perl -pi -e 's,gkeytool ,gkeytool%{gccsuffix} ,' generate-cacerts.pl
 perl -pi -e 's,gjarsigner ,gjarsigner%{gccsuffix} ,' Makefile.am
 perl -pi -e 's,gappletviewer ,gappletviewer%{gccsuffix} ,' Makefile.am
+
+%if %with fastjar
 # (anssi) GCC4.2 contains gjar instead of fastjar
 # we use external fastjar due to upstream classpath bug anyway:
 # http://gcc.gnu.org/bugzilla/show_bug.cgi?id=32516
 perl -pi -e 's,fastjar\$\(gcc_suffix\),fastjar,' Makefile.am
+%else
+perl -pi -e 's,fastjar\$\(gcc_suffix\),gjar\$\(gcc_suffix\),' Makefile.am
+%endif
 
 %build
 aclocal
