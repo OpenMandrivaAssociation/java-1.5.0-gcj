@@ -35,7 +35,7 @@
 
 Name:		%{name}
 Version:	%{javaver}.%{buildver}
-Release:	%mkrel 17.1.2
+Release:	%mkrel 17.1.3
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
@@ -386,10 +386,10 @@ install -dm 755 $RPM_BUILD_ROOT%{_jvmdir}/%{sdkdir}/lib
 ln -s %{_javadir}/src-%{gccver}.zip %{buildroot}%{_jvmdir}/%{sdkdir}/src.zip
 # %name
 ln -s %{_javadir}/libgcj-%{gccver}.jar %{buildroot}%{_jvmdir}/%{sdkdir}/jre/lib/rt.jar
-ln -s %{_libdir}/gcj-%{gccver}/libjawt.so %{buildroot}%{_jvmdir}/%{jredir}/lib/%{_arch}/libjawt.so
-ln -s %{_libdir}/gcj-%{gccver}/libjvm.so %{buildroot}%{_jvmdir}/%{jredir}/lib/%{_arch}/client/libjvm.so
-ln -s %{_libdir}/gcj-%{gccver}/libjvm.so %{buildroot}%{_jvmdir}/%{jredir}/lib/%{_arch}/server/libjvm.so
-ln -s %{_libdir}/gcj-%{gccver}/libjvm.so %{buildroot}%{_jvmdir}/%{jredir}/lib/%{_arch}/native_threads/libhpi.so
+ln -s %{_libdir}/gcj-%{gccver}-%{gccsoversion}/libjawt.so %{buildroot}%{_jvmdir}/%{jredir}/lib/%{_arch}/libjawt.so
+ln -s %{_libdir}/gcj-%{gccver}-%{gccsoversion}/libjvm.so %{buildroot}%{_jvmdir}/%{jredir}/lib/%{_arch}/client/libjvm.so
+ln -s %{_libdir}/gcj-%{gccver}-%{gccsoversion}/libjvm.so %{buildroot}%{_jvmdir}/%{jredir}/lib/%{_arch}/server/libjvm.so
+ln -s %{_libdir}/gcj-%{gccver}-%{gccsoversion}/libjvm.so %{buildroot}%{_jvmdir}/%{jredir}/lib/%{_arch}/native_threads/libhpi.so
 # devel
 ln -s %{_javadir}/libgcj-tools-%{gccver}.jar %{buildroot}%{_jvmdir}/%{sdkdir}/lib/tools.jar
 ln -s $(gcj%{gccsuffix} -print-file-name=include/jawt.h) %{buildroot}%{_jvmdir}/%{sdkdir}/include/jawt.h
@@ -420,9 +420,9 @@ popd
 install -dm 755 %{buildroot}%{_sysconfdir}/rpm/macros.d
 cat > %{buildroot}%{_sysconfdir}/rpm/macros.d/%{name}.macros <<EOF
 # The GCJ that should be used when building packages with %{name}-devel
-%%gcj %{_bindir}/gcj%gccsuffix
+%%gcj %{_bindir}/gcj%{gccsuffix}
 # The GCJ dbtool that should be used
-%%gcj_dbtool %{_bindir}/gcj-dbtool%gccsuffix
+%%gcj_dbtool %{_bindir}/gcj-dbtool%{gccsuffix}
 EOF
 
 %clean
@@ -524,11 +524,11 @@ fi
 %post plugin
 [ -d %{plugindir} ] || %{__mkdir_p} %{plugindir}
 %{_sbindir}/update-alternatives --install %{plugindir}/libjavaplugin.so \
-    libjavaplugin.so %{_libdir}/gcj-%{gccver}/libgcjwebplugin.so %{priority}
+    libjavaplugin.so %{_libdir}/gcj-%{gccver}-%{gccsoversion}/libgcjwebplugin.so %{priority}
 
 %postun plugin
-if [ $1 -eq 0 ] || ! [ -e  %{_libdir}/gcj-%{gccver}/libgcjwebplugin.so ]; then
-   %{_sbindir}/update-alternatives --remove libjavaplugin.so %{_libdir}/gcj-%{gccver}/libgcjwebplugin.so
+if [ $1 -eq 0 ] || ! [ -e  %{_libdir}/gcj-%{gccver}-%{gccsoversion}/libgcjwebplugin.so ]; then
+   %{_sbindir}/update-alternatives --remove libjavaplugin.so %{_libdir}/gcj-%{gccver}-%{gccsoversion}/libgcjwebplugin.so
 fi
 %endif
 
