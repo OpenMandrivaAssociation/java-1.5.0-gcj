@@ -35,7 +35,7 @@
 
 Name:		%{name}
 Version:	%{javaver}.%{buildver}
-Release:	%mkrel 17.1.4
+Release:	%mkrel 17.1.5
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
@@ -190,7 +190,8 @@ Summary:       API documentation for libgcj
 Group:         Development/Java
 
 # require base package
-Requires: %{name} = %{version}-%{release}
+# (walluck): why? docs should not require a JVM
+#Requires: %{name} = %{version}-%{release}
 
 # standard JPackage javadoc provides
 Provides: java-javadoc = %{version}-%{release}
