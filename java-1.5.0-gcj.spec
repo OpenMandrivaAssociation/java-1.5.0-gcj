@@ -39,6 +39,7 @@ Release:	%mkrel 17.1.5
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 License:	GPL
 URL:		http://sources.redhat.com/rhug/java-gcj-compat.html
 Source0:	ftp://sources.redhat.com/pub/rhug/java-gcj-compat-%{jgcver}.tar.bz2
