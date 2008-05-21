@@ -9,7 +9,7 @@
 %define section		free
 
 %define origin		gcj
-%define gccsuffix	4.3
+%define gccsuffix	%nil
 %define gccsoversion	9
 %define priority	1500
 %define	javaver		1.5.0
@@ -35,7 +35,7 @@
 
 Name:		%{name}
 Version:	%{javaver}.%{buildver}
-Release:	%mkrel 17.1.6
+Release:	%mkrel 17.1.7
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
