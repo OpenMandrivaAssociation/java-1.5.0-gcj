@@ -35,7 +35,7 @@
 
 Name:		%{name}
 Version:	%{javaver}.%{buildver}
-Release:	%mkrel 8.1.7
+Release:	%mkrel 17.1.8
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
@@ -57,7 +57,7 @@ BuildRequires: gcc%{gccsuffix}-java
 BuildRequires: libgcj%{gccsoversion}-src
 # required for cacerts generation
 BuildRequires: openssl
-%py_requires -d
+BuildRequires: python-devel
 BuildRequires: java-rpmbuild
 %if %without bootstrap
 BuildRequires: sinjdoc
@@ -131,7 +131,7 @@ Requires:         python
 Requires(post):   update-alternatives >= 1.8.6
 # postun requires alternatives to uninstall tool alternatives
 Requires(postun): update-alternatives
-
+%py_requires -d
 Requires:      gcc%{gccsuffix}-java
 
 %if %with fastjar
