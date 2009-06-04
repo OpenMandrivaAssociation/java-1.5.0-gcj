@@ -2,7 +2,7 @@
 # with => disabled by default
 # without => enabled by default
 
-%bcond_with             bootstrap
+%bcond_with bootstrap
 %bcond_with             plugin
 %bcond_with             fastjar
 
@@ -10,13 +10,13 @@
 
 %define origin		gcj
 %define gccsuffix	%nil
-%define gccsoversion	9
+%define gccsoversion	10
 %define priority	1500
 %define	javaver		1.5.0
 %define buildver	0
 # the version-release string for the gcj rpms we require
 %define gccver		%(gcc%{gccsuffix} -dumpversion 2>/dev/null || echo 0)
-%define jgcver		1.0.76
+%define jgcver		1.0.80
 %define jar		%{_bindir}/gjar%{gccsuffix}
 
 %define name            java-%{javaver}-%{origin}
@@ -35,15 +35,14 @@
 
 Name:		%{name}
 Version:	%{javaver}.%{buildver}
-Release:	%mkrel 17.1.8
+Release:	%mkrel 17.1.9
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 License:	GPL
 URL:		http://sources.redhat.com/rhug/java-gcj-compat.html
-Source0:	ftp://sources.redhat.com/pub/rhug/java-gcj-compat-%{jgcver}.tar.bz2
-Patch0:		aot-compile-rpm.patch
+Source0:	ftp://sources.redhat.com/pub/rhug/java-gcj-compat-%{jgcver}.tar.gz
 Patch1:		java-1.4.2-gcj-compat-aot-compile-rpm.patch
 # (anssi) fix --exclude when buildroot contains ending slash:
 Patch2:		java-1.4.2-gcj-compat-aotcompile-normpath.patch
@@ -234,7 +233,6 @@ This package installs gcjwebplugin, a Mozilla plugin for applets.
 
 %prep
 %setup -q -n java-gcj-compat-%{jgcver}
-%patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch4 -p1
@@ -355,13 +353,13 @@ pushd docsbuild
     | sed -e "s/\.\///" | sed -e "s/\//\./" \
     | sed -e "s/\//\./" | sed -e "s/\//\./" \
     | sed -e "s/\//\./" | sed -e "s/\//\./" \
-    | xargs sinjdoc \
+    | xargs -n 1 sinjdoc \
     -d $RPM_BUILD_ROOT%{_javadocdir}/%{name} \
     -encoding UTF-8 -breakiterator -licensetext \
     -linksource -splitindex -doctitle "GNU libgcj $GIJ_VERSION" \
     -windowtitle "GNU libgcj $GIJ_VERSION Documentation" || \
-      [ 0$(find $RPM_BUILD_ROOT%{_javadocdir}/%{name} | wc -l) -gt 4000 ]
-# (anssi) if over 4000 docfiles are created, consider it a success enough
+      [ 0$(find $RPM_BUILD_ROOT%{_javadocdir}/%{name} | wc -l) -gt 3800 ]
+# (anssi) if over 3800 docfiles are created, consider it a success enough
 popd
 %endif
 
