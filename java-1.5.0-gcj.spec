@@ -10,7 +10,7 @@
 
 %define origin		gcj
 %define gccsuffix	%nil
-%define gccsoversion	10
+%define gccsoversion	11
 %define priority	1500
 %define	javaver		1.5.0
 %define buildver	0
@@ -35,7 +35,7 @@
 
 Name:		%{name}
 Version:	%{javaver}.%{buildver}
-Release:	%mkrel 17.1.11
+Release:	%mkrel 17.1.12
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
