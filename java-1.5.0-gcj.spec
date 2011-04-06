@@ -424,6 +424,10 @@ cat > %{buildroot}%{_sysconfdir}/rpm/macros.d/%{name}.macros <<EOF
 %%gcj_dbtool %{_bindir}/gcj-dbtool%{gccsuffix}
 EOF
 
+## FIXME - (temporarily?) using versions installed by gcc-java-4.6.0
+rm -f %{buildroot}%{_bindir}/aot-compile
+rm -f %{buildroot}%{_bindir}/rebuild-gcj-db
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
