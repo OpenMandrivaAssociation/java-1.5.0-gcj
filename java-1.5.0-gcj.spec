@@ -35,7 +35,7 @@
 
 Name:		%{name}
 Version:	%{javaver}.%{buildver}
-Release:	%mkrel 17.1.15
+Release:	%mkrel 17.1.16
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
@@ -63,8 +63,7 @@ BuildRequires: sinjdoc
 %endif
 
 # required for tools and libgcj.jar
-Requires:         libgcj%{gccsoversion}-base >= %{gccver}
-Requires:         gcj%{gccsuffix}-tools >= %{gccver}
+Requires:         %{mklibname gcj %{gccsoversion}} >= %{gccver}
 # XXX: this might not be the right place for it, but it needs to be somewhere
 Requires:         bouncycastle
 # required for directory structures
@@ -545,7 +544,7 @@ fi
 %dir %{_jvmdir}/%{jredir}/lib/security
 %dir %{jvmjardir}
 %dir %{_libdir}/gcj
-%{_bindir}/rebuild-gcj-db
+#%{_bindir}/rebuild-gcj-db
 %{_jvmdir}/%{jredir}/bin/java
 %{_jvmdir}/%{jredir}/bin/keytool
 %{_jvmdir}/%{jredir}/bin/rmiregistry
@@ -627,7 +626,7 @@ fi
 %dir %{_jvmdir}/%{sdkdir}/include
 %dir %{_jvmdir}/%{sdkdir}/include/linux
 %dir %{_jvmdir}/%{sdkdir}/lib
-%{_bindir}/aot-compile
+#%{_bindir}/aot-compile
 %{_bindir}/aot-compile-rpm
 %{python_sitelib}/aotcompile.py*
 %{python_sitelib}/classfile.py*
