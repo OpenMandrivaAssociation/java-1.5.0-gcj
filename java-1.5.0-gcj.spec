@@ -35,7 +35,7 @@
 
 Name:		%{name}
 Version:	%{javaver}.%{buildver}
-Release:	%mkrel 17.1.17
+Release:	%mkrel 18
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
@@ -43,12 +43,10 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 License:	GPL
 URL:		http://sources.redhat.com/rhug/java-gcj-compat.html
 Source0:	ftp://sources.redhat.com/pub/rhug/java-gcj-compat-%{jgcver}.tar.gz
-Patch1:		java-1.4.2-gcj-compat-aot-compile-rpm.patch
-# (anssi) fix --exclude when buildroot contains ending slash:
-Patch2:		java-1.4.2-gcj-compat-aotcompile-normpath.patch
+Patch0:		java-1.4.2-gcj-compat-aot-compile-rpm.patch
 # Add only .so linked to correct libgcj_bc.so during rebuild-gcj-db,
 # to avoid gij failure with non-rebuilt packages
-Patch4:		java-1.5.0-gcj-ensure-soname-compat.patch
+Patch1:		java-1.5.0-gcj-ensure-soname-compat.patch
 
 # required to calculate gcj binary's path to encode in aotcompile.py
 # and rebuild-gcj-db
@@ -232,9 +230,8 @@ This package installs gcjwebplugin, a Mozilla plugin for applets.
 
 %prep
 %setup -q -n java-gcj-compat-%{jgcver}
+%patch0 -p1
 %patch1 -p1
-%patch2 -p1
-%patch4 -p1
 # (anssi) for patch4:
 GCJ_BC_MAJOR=$(objdump -p $(gcj%gccsuffix -print-file-name=libgcj_bc.so) | \
 	grep SONAME | sed -ne 's,^.*libgcj_bc.so.\([^ ]\).*$,\1,p')
@@ -294,7 +291,7 @@ popd
 
 # security directory and provider list
 install -dm 755 $RPM_BUILD_ROOT%{_jvmdir}/%{jredir}/lib/security
-ln -sf %{_libdir}/security/classpath.security $RPM_BUILD_ROOT%{_jvmdir}/%{jredir}/lib/security/java.security
+ln -sf %{_prefix}/lib/security/classpath.security $RPM_BUILD_ROOT%{_jvmdir}/%{jredir}/lib/security/java.security
 
 %if 0
 # (anssi) we have those in jpackage-utils
