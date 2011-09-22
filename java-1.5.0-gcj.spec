@@ -63,7 +63,10 @@ BuildRequires: sinjdoc
 # required for tools and libgcj.jar
 Requires:         %{mklibname gcj %{gccsoversion}} >= %{gccver}
 # XXX: this might not be the right place for it, but it needs to be somewhere
+%if %without bootstrap
 Requires:         bouncycastle
+%endif
+
 # required for directory structures
 Requires:         jpackage-utils >= 1.7.3
 Requires(post):	jpackage-utils
