@@ -2,7 +2,12 @@
 # with => disabled by default
 # without => enabled by default
 
+# FIXME until correcting some issues with the mandriva java stack
+%if 1
+%bcond_without bootstrap
+%else
 %bcond_with bootstrap
+%endif
 %bcond_with             plugin
 %bcond_with             fastjar
 
