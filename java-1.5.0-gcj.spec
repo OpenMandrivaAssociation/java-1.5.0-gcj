@@ -5,6 +5,7 @@
 # FIXME until correcting some issues with the mandriva java stack
 %if 1
 %bcond_without bootstrap
+BuildConflicts:		java-1.5.0-gcj
 %else
 %bcond_with bootstrap
 %endif
