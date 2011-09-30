@@ -2,13 +2,7 @@
 # with => disabled by default
 # without => enabled by default
 
-# FIXME until correcting some issues with the mandriva java stack
-%if 1
-%bcond_without bootstrap
-BuildConflicts:		java-1.5.0-gcj
-%else
 %bcond_with bootstrap
-%endif
 %bcond_with             plugin
 %bcond_with             fastjar
 
@@ -41,7 +35,7 @@ BuildConflicts:		java-1.5.0-gcj
 
 Name:		%{name}
 Version:	%{javaver}.%{buildver}
-Release:	%mkrel 19
+Release:	%mkrel 18
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
@@ -426,7 +420,6 @@ cat > %{buildroot}%{_sysconfdir}/rpm/macros.d/%{name}.macros <<EOF
 %%gcj_dbtool %{_bindir}/gcj-dbtool%{gccsuffix}
 EOF
 
-## FIXME - (temporarily?) using versions installed by gcc-java-4.6.0
 rm -f %{buildroot}%{_bindir}/aot-compile
 rm -f %{buildroot}%{_bindir}/rebuild-gcj-db
 
