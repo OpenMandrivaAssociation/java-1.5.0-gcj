@@ -271,13 +271,13 @@ export JAR=%jar
 touch --reference=aotcompile.py.in aotcompile.py
 
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %makeinstall_std
 
 # extensions handling
-install -dm 755 $RPM_BUILD_ROOT%{jvmjardir}
-pushd $RPM_BUILD_ROOT%{jvmjardir}
+install -dm 755 %{buildroot}%{jvmjardir}
+pushd %{buildroot}%{jvmjardir}
   for jarname in jaas jce jdbc-stdext jndi jndi-cos jndi-dns \
     jndi-ldap jndi-rmi jsse sasl jta; do
     ln -s %{_jvmdir}/%{jredir}/lib/$jarname.jar $jarname-%{version}.jar
@@ -289,14 +289,14 @@ pushd $RPM_BUILD_ROOT%{jvmjardir}
 popd
 
 # security directory and provider list
-install -dm 755 $RPM_BUILD_ROOT%{_jvmdir}/%{jredir}/lib/security
-ln -sf %{_prefix}/lib/security/classpath.security $RPM_BUILD_ROOT%{_jvmdir}/%{jredir}/lib/security/java.security
+install -dm 755 %{buildroot}%{_jvmdir}/%{jredir}/lib/security
+ln -sf %{_prefix}/lib/security/classpath.security %{buildroot}%{_jvmdir}/%{jredir}/lib/security/java.security
 
 %if 0
 # (anssi) we have those in jpackage-utils
 
 # default security providers, provided by libgcj
-install -dm 755 $RPM_BUILD_ROOT%{_sysconfdir}/java/security/security.d
+install -dm 755 %{buildroot}%{_sysconfdir}/java/security/security.d
 for provider in \
   1000-gnu.java.security.provider.Gnu \
   1001-gnu.javax.crypto.jce.GnuCrypto \
@@ -304,7 +304,7 @@ for provider in \
   1003-gnu.javax.net.ssl.provider.Jessie \
   1004-gnu.javax.security.auth.callback.GnuCallbacks
 do
-  cat > $RPM_BUILD_ROOT%{_sysconfdir}/java/security/security.d/$provider << EOF
+  cat > %{buildroot}%{_sysconfdir}/java/security/security.d/$provider << EOF
 # This file's contents are ignored.  It's name, of the form
 # <priority>-<provider name>, is used by rebuild-security-providers to
 # rebuild the list of security providers in libgcj's
@@ -316,26 +316,26 @@ done
 
 # cacerts
 %{__perl} generate-cacerts.pl
-install -m 644 cacerts $RPM_BUILD_ROOT%{_jvmdir}/%{jredir}/lib/security
+install -m 644 cacerts %{buildroot}%{_jvmdir}/%{jredir}/lib/security
 
 # versionless symlinks
-pushd $RPM_BUILD_ROOT%{_jvmdir}
+pushd %{buildroot}%{_jvmdir}
    ln -s %{jredir} %{jrelnk}
    ln -s %{sdkdir} %{sdklnk}
 popd
 
-pushd $RPM_BUILD_ROOT%{_jvmjardir}
+pushd %{buildroot}%{_jvmjardir}
    ln -s %{sdkdir} %{jrelnk}
    ln -s %{sdkdir} %{sdklnk}
 popd
 
 # classmap database directory
-install -dm 755 $RPM_BUILD_ROOT%{_libdir}/gcj
+install -dm 755 %{buildroot}%{_libdir}/gcj
 
 %if %without bootstrap
 # build and install API documentation
-install -dm 755 $RPM_BUILD_ROOT%{_javadocdir}/%{name}
-pushd $RPM_BUILD_ROOT%{_javadocdir}
+install -dm 755 %{buildroot}%{_javadocdir}/%{name}
+pushd %{buildroot}%{_javadocdir}
   ln -s %{name} java
 popd
 mkdir docsbuild
@@ -349,11 +349,11 @@ pushd docsbuild
     | sed -e "s/\//\./" | sed -e "s/\//\./" \
     | sed -e "s/\//\./" | sed -e "s/\//\./" \
     | xargs -n 1 sinjdoc \
-    -d $RPM_BUILD_ROOT%{_javadocdir}/%{name} \
+    -d %{buildroot}%{_javadocdir}/%{name} \
     -encoding UTF-8 -breakiterator -licensetext \
     -linksource -splitindex -doctitle "GNU libgcj $GIJ_VERSION" \
     -windowtitle "GNU libgcj $GIJ_VERSION Documentation" || \
-      [ 0$(find $RPM_BUILD_ROOT%{_javadocdir}/%{name} | wc -l) -gt 3800 ]
+      [ 0$(find %{buildroot}%{_javadocdir}/%{name} | wc -l) -gt 3800 ]
 # (anssi) if over 3800 docfiles are created, consider it a success enough
 popd
 %endif
@@ -364,17 +364,17 @@ cd %{buildroot}%{_jvmdir}/%{jredir}/lib && \
 %endif
 
 # install operating system include directory
-install -dm 755 $RPM_BUILD_ROOT%{_jvmdir}/%{sdkdir}/include/linux
+install -dm 755 %{buildroot}%{_jvmdir}/%{sdkdir}/include/linux
 
 # install libjvm.so directories
-install -dm 755 $RPM_BUILD_ROOT%{_jvmdir}/%{jredir}/lib/%{_arch}/client
-install -dm 755 $RPM_BUILD_ROOT%{_jvmdir}/%{jredir}/lib/%{_arch}/server
+install -dm 755 %{buildroot}%{_jvmdir}/%{jredir}/lib/%{_arch}/client
+install -dm 755 %{buildroot}%{_jvmdir}/%{jredir}/lib/%{_arch}/server
 
 # install native_threads directory
 %{__mkdir_p} %{buildroot}%{_jvmdir}/%{jredir}/lib/%{_arch}/native_threads
 
 # install tools.jar directory
-install -dm 755 $RPM_BUILD_ROOT%{_jvmdir}/%{sdkdir}/lib
+install -dm 755 %{buildroot}%{_jvmdir}/%{sdkdir}/lib
 
 # (anssi) Link at build-time, not runtime
 # src
@@ -393,7 +393,7 @@ ln -s $(gcj%{gccsuffix} -print-file-name=include/jawt_md.h) %{buildroot}%{_jvmdi
 ln -s $(gcj%{gccsuffix} -print-file-name=include/jni_md.h) %{buildroot}%{_jvmdir}/%{sdkdir}/include/linux/jni_md.h
 
 # (anssi) needed by jni_md.h (since gcj4.2 or gcj4.3):
-install -dm 755 $RPM_BUILD_ROOT%{_jvmdir}/%{sdkdir}/include/linux/gcj
+install -dm 755 %{buildroot}%{_jvmdir}/%{sdkdir}/include/linux/gcj
 ln -s $(gcj%{gccsuffix} -print-file-name=include/gcj/libgcj-config.h) %{buildroot}%{_jvmdir}/%{sdkdir}/include/linux/gcj/libgcj-config.h
 
 # (anssi) Normally there is no need to do -I$JAVA_HOME/include/linux when
@@ -403,7 +403,7 @@ ln -s linux/gcj %{buildroot}%{_jvmdir}/%{sdkdir}/include/gcj
 ln -s linux/jni_md.h %{buildroot}%{_jvmdir}/%{sdkdir}/include/jni_md.h
 ln -s linux/jawt_md.h %{buildroot}%{_jvmdir}/%{sdkdir}/include/jawt_md.h
 
-pushd $RPM_BUILD_ROOT%{_jvmdir}/%{sdkdir}/jre/lib
+pushd %{buildroot}%{_jvmdir}/%{sdkdir}/jre/lib
   for jarname in jaas jce jdbc-stdext jndi jndi-cos jndi-dns \
     jndi-ldap jndi-rmi jsse sasl jta
   do
@@ -424,7 +424,7 @@ rm -f %{buildroot}%{_bindir}/aot-compile
 rm -f %{buildroot}%{_bindir}/rebuild-gcj-db
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %post
 %{_sbindir}/update-alternatives \
