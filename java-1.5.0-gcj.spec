@@ -35,7 +35,7 @@
 
 Name:		%{name}
 Version:	%{javaver}.%{buildver}
-Release:	%mkrel 20
+Release:	%mkrel 21
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
@@ -540,6 +540,7 @@ fi
 %dir %{_jvmdir}/%{jredir}/lib/%{_arch}
 %dir %{_jvmdir}/%{jredir}/lib/%{_arch}/client
 %dir %{_jvmdir}/%{jredir}/lib/%{_arch}/server
+%dir %{_jvmdir}/%{jredir}/lib/%{_arch}/native_threads
 %dir %{_jvmdir}/%{jredir}/lib/security
 %dir %{jvmjardir}
 %dir %{_libdir}/gcj
