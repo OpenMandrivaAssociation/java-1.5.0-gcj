@@ -10,7 +10,7 @@
 
 %define origin		gcj
 %define gccsuffix	%nil
-%define gccsoversion	12
+%define gccsoversion	13
 %define priority	1500
 %define	javaver		1.5.0
 %define buildver	0
@@ -35,7 +35,7 @@
 
 Name:		%{name}
 Version:	%{javaver}.%{buildver}
-Release:	%mkrel 21
+Release:	21
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
@@ -50,10 +50,11 @@ Patch1:		java-1.5.0-gcj-ensure-soname-compat.patch
 
 # required to calculate gcj binary's path to encode in aotcompile.py
 # and rebuild-gcj-db
-BuildRequires: gcc%{gccsuffix}-java
+BuildRequires: gcc%{gccsuffix}-java eclipse-ecj
 BuildRequires: libgcj%{gccsoversion}-src
 # required for cacerts generation
 BuildRequires: openssl
+BuildRequires: gcj-tools
 BuildRequires: python-devel
 BuildRequires: java-rpmbuild
 %if %without bootstrap
@@ -62,7 +63,8 @@ BuildRequires: sinjdoc
 
 # required for tools and libgcj.jar
 Requires:         %{mklibname gcj %{gccsoversion}} >= %{gccver}
-
+# XXX: this might not be the right place for it, but it needs to be somewhere
+Requires:         bouncycastle
 # required for directory structures
 Requires:         jpackage-utils >= 1.7.3
 Requires(post):	jpackage-utils
@@ -315,7 +317,7 @@ done
 %endif
 
 # cacerts
-%{__perl} generate-cacerts.pl
+perl generate-cacerts.pl
 install -m 644 cacerts %{buildroot}%{_jvmdir}/%{jredir}/lib/security
 
 # versionless symlinks
@@ -420,6 +422,7 @@ cat > %{buildroot}%{_sysconfdir}/rpm/macros.d/%{name}.macros <<EOF
 %%gcj_dbtool %{_bindir}/gcj-dbtool%{gccsuffix}
 EOF
 
+## FIXME - (temporarily?) using versions installed by gcc-java-4.6.0
 rm -f %{buildroot}%{_bindir}/aot-compile
 rm -f %{buildroot}%{_bindir}/rebuild-gcj-db
 
@@ -540,7 +543,6 @@ fi
 %dir %{_jvmdir}/%{jredir}/lib/%{_arch}
 %dir %{_jvmdir}/%{jredir}/lib/%{_arch}/client
 %dir %{_jvmdir}/%{jredir}/lib/%{_arch}/server
-%dir %{_jvmdir}/%{jredir}/lib/%{_arch}/native_threads
 %dir %{_jvmdir}/%{jredir}/lib/security
 %dir %{jvmjardir}
 %dir %{_libdir}/gcj
@@ -675,5 +677,3 @@ fi
 %files plugin
 %defattr(-,root,root,-)
 %endif
-
-
