@@ -35,7 +35,7 @@
 
 Name:		%{name}
 Version:	%{javaver}.%{buildver}
-Release:	21
+Release:	22
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
