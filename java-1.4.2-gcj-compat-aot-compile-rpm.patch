@@ -1,0 +1,48 @@
+--- java-gcj-compat-1.0.80/aotcompile.py.in.orig	2009-02-19 09:56:58.000000000 -0300
++++ java-gcj-compat-1.0.80/aotcompile.py.in	2011-04-26 14:09:38.756003953 -0300
+@@ -156,8 +156,8 @@ def find_jobs(dir, exclusions = ()):
+     # option is temporary in aot-compile-rpm and dead options left in
+     # specfiles will hinder its removal.
+     for path in exclusions:
+-        if path in paths:
+-            paths.remove(path)
++        if os.path.normpath(path) in paths:
++            paths.remove(os.path.normpath(path))
+         else:
+             raise Error, "%s: path does not exist or is not a job" % path
+     # Build the list of jobs
+--- java-gcj-compat-1.0.80/aot-compile-rpm.orig	2008-09-03 07:10:23.000000000 -0300
++++ java-gcj-compat-1.0.80/aot-compile-rpm	2011-04-26 14:09:43.909003953 -0300
+@@ -15,6 +15,7 @@
+ 
+ import aotcompile
+ import os
++import re
+ import sys
+ 
+ def libdir():
+@@ -46,8 +47,8 @@ def copy(srcdir, dstdir, suffix):
+     aotcompile.system(("/bin/cp", "-a", srcdir, dstdir))
+ 
+ try:
+-    name = os.environ.get("RPM_PACKAGE_NAME")
+-    if name is None:
++    aotcompile.name = os.environ.get("RPM_PACKAGE_NAME")
++    if aotcompile.name is None:
+         raise aotcompile.Error, "not for use outside rpm specfiles"
+     arch = os.environ.get("RPM_ARCH")
+     if arch == "noarch":
+@@ -58,10 +59,11 @@ try:
+     tmpdir = os.path.join(os.getcwd(), "aot-compile-rpm")
+     if os.path.exists(tmpdir):
+         raise aotcompile.Error, "%s exists" % tmpdir
+-    dstdir = os.path.join(libdir(), "gcj", name)
++    dstdir = os.path.join(libdir(), "gcj", aotcompile.name)
+ 
+     compiler = aotcompile.Compiler(srcdir, dstdir, tmpdir)
+-    compiler.gcjflags[0:0] = os.environ.get("RPM_OPT_FLAGS", "").split() 
++    p = re.compile('-O[2-9]+');
++    compiler.gcjflags[0:0] = p.sub('-O', os.environ.get("RPM_OPT_FLAGS", "")).split()
+ 
+     # XXX: This script should not accept options, because having
+     # them it cannot be integrated into rpm.  But, gcj cannot
