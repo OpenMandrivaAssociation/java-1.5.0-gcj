@@ -6,8 +6,6 @@
 %bcond_with             plugin
 %bcond_with             fastjar
 
-%define section		free
-
 %define origin		gcj
 %define gccsuffix	%nil
 %define gccsoversion	13
@@ -18,8 +16,6 @@
 %define gccver		%(gcc%{gccsuffix} -dumpversion 2>/dev/null || echo 0)
 %define jgcver		1.0.80
 %define jar		%{_bindir}/gjar%{gccsuffix}
-
-%define name            java-%{javaver}-%{origin}
 
 %define	sdklnk		java-%{javaver}-%{origin}
 %define	jrelnk		jre-%{javaver}-%{origin}
@@ -33,13 +29,12 @@
 %define plugindir       %{_libdir}/mozilla/plugins
 %endif
 
-Name:		%{name}
+Name:		java-%{javaver}-%{origin}
 Version:	%{javaver}.%{buildver}
-Release:	21
+Release:	22
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 License:	GPL
 URL:		http://sources.redhat.com/rhug/java-gcj-compat.html
 Source0:	ftp://sources.redhat.com/pub/rhug/java-gcj-compat-%{jgcver}.tar.gz
@@ -58,8 +53,9 @@ BuildRequires: gcj-tools
 BuildRequires: python-devel
 BuildRequires: java-rpmbuild
 %if %without bootstrap
-BuildRequires: sinjdoc
+BuildRequires: java-1.6.0-openjdk-devel
 %endif
+BuildArch: noarch
 
 # required for tools and libgcj.jar
 Requires:         %{mklibname gcj %{gccsoversion}} >= %{gccver}
@@ -136,9 +132,8 @@ Requires: fastjar
 %endif
 
 %if %without bootstrap
-# required for javadoc symlink
-# (anssi) fedora has this in main package for no reason
-Requires: sinjdoc
+# For javadoc symlink
+Requires: java-1.6.0-openjdk-devel
 %endif
 
 # standard JPackage devel provides
@@ -350,9 +345,9 @@ pushd docsbuild
     | sed -e "s/\.\///" | sed -e "s/\//\./" \
     | sed -e "s/\//\./" | sed -e "s/\//\./" \
     | sed -e "s/\//\./" | sed -e "s/\//\./" \
-    | xargs -n 1 sinjdoc \
+    | xargs -n 1 javadoc \
     -d $RPM_BUILD_ROOT%{_javadocdir}/%{name} \
-    -encoding UTF-8 -breakiterator -licensetext \
+    -encoding UTF-8 -breakiterator \
     -linksource -splitindex -doctitle "GNU libgcj $GIJ_VERSION" \
     -windowtitle "GNU libgcj $GIJ_VERSION Documentation" || \
       [ 0$(find $RPM_BUILD_ROOT%{_javadocdir}/%{name} | wc -l) -gt 3800 ]
@@ -605,6 +600,7 @@ fi
 %{_jvmdir}/%{jredir}/lib/%{_arch}/libjawt.so
 %{_jvmdir}/%{jredir}/lib/%{_arch}/client/libjvm.so
 %{_jvmdir}/%{jredir}/lib/%{_arch}/server/libjvm.so
+%dir %{_jvmdir}/%{jredir}/lib/%{_arch}/native_threads
 %{_jvmdir}/%{jredir}/lib/%{_arch}/native_threads/libhpi.so
 # these must not be marked %config(noreplace). their names are used by
 # rebuild-security-providers, which lists
