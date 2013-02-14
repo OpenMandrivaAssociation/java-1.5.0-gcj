@@ -1,0 +1,12 @@
+--- java-gcj-compat-1.0.80/aotcompile.py.in~	2009-02-19 13:56:58.000000000 +0100
++++ java-gcj-compat-1.0.80/aotcompile.py.in	2011-01-14 01:33:58.078711500 +0100
+@@ -326,7 +326,8 @@
+             fp = open(path, "r")
+             magic = fp.read(4)
+             if magic == CLASSMAGIC:
+-                self.addClass(magic + fp.read(), name)
++                bytes = magic + fp.read()
++                self.addClass(bytes, classname(bytes))
+     
+ def weed_jobs(jobs):
+     """Remove any jarfiles that are completely contained within

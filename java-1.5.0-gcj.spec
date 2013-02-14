@@ -24,6 +24,7 @@
 %define sdkbindir	%{_jvmdir}/%{sdklnk}/bin
 %define jrebindir	%{_jvmdir}/%{jrelnk}/bin
 %define jvmjardir       %{_jvmjardir}/%{name}-%{version}
+%define jafver          1.1
 
 %if %with plugin
 %define plugindir       %{_libdir}/mozilla/plugins
@@ -31,7 +32,7 @@
 
 Name:		java-%{javaver}-%{origin}
 Version:	%{javaver}.%{buildver}
-Release:	22
+Release:	23
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
@@ -42,6 +43,8 @@ Patch0:		java-1.4.2-gcj-compat-aot-compile-rpm.patch
 # Add only .so linked to correct libgcj_bc.so during rebuild-gcj-db,
 # to avoid gij failure with non-rebuilt packages
 Patch1:		java-1.5.0-gcj-ensure-soname-compat.patch
+# Fix invalid python code causing aotcompile to explode
+Patch5:		java-gcj-compat-1.0.80-fix-aotcompile.patch
 
 # required to calculate gcj binary's path to encode in aotcompile.py
 # and rebuild-gcj-db
@@ -107,6 +110,10 @@ Obsoletes: gnu-crypto-auth-jdk1.4 < 2.1.0-7
 Obsoletes: gnu-crypto-jce-jdk1.4 < 2.1.0-7
 Obsoletes: gnu-crypto-sasl-jdk1.4 < 2.1.0-7
 Obsoletes: jessie <= 1.0.1-7
+Obsoletes: classpathx-jaf <= 1.0-16
+Provides:  jaf = 0:%{jafver}
+Provides:  activation = 0:%{jafver}
+Obsoletes: gnujaf <= 0:1.0-0.rc1.1jp
 
 %description
 This package installs directory structures, shell scripts and symbolic
@@ -187,13 +194,17 @@ Group:         Development/Java
 #Requires: %{name} = %{version}-%{release}
 
 # standard JPackage javadoc provides
-Provides: java-javadoc = %{version}-%{release}
-Provides: java-%{javaver}-javadoc = %{version}-%{release}
+Provides:	java-javadoc = %{version}-%{release}
+Provides:	java-%{javaver}-javadoc = %{version}-%{release}
 # java-gcj-compat javadoc provides
-Provides: java-1.4.2-gcj-compat-javadoc = 1.4.2.0-41
+Provides:	java-1.4.2-gcj-compat-javadoc = 1.4.2.0-41
 
-Obsoletes: java-1.4.2-gcj-compat-javadoc < 1.4.2.0-41
-Obsoletes: gnu-crypto-javadoc < 2.1.0-7
+Obsoletes:	java-1.4.2-gcj-compat-javadoc < 1.4.2.0-41
+Obsoletes:	gnu-crypto-javadoc < 2.1.0-7
+Obsoletes:	classpathx-jaf-javadoc <= 1.0-16
+Provides:	jaf-javadoc = 0:%{jafver}
+Provides:	activation-javadoc = 0:%{jafver}
+Obsoletes:	gnujaf-javadoc <= 0:1.0-0.rc1.1jpp
 
 %description javadoc
 This package installs Javadoc API documentation for libgcj.
@@ -228,6 +239,7 @@ This package installs gcjwebplugin, a Mozilla plugin for applets.
 %setup -q -n java-gcj-compat-%{jgcver}
 %patch0 -p1
 %patch1 -p1
+%patch5 -p1
 # (anssi) for patch4:
 GCJ_BC_MAJOR=$(objdump -p $(gcj%gccsuffix -print-file-name=libgcj_bc.so) | \
 	grep SONAME | sed -ne 's,^.*libgcj_bc.so.\([^ ]\).*$,\1,p')
@@ -246,11 +258,11 @@ perl -pi -e 's,fastjar\$\(gcc_suffix\),fastjar,' Makefile.am
 %else
 perl -pi -e 's,fastjar\$\(gcc_suffix\),gjar\$\(gcc_suffix\),' Makefile.am
 %endif
-
-%build
 aclocal
 automake
 autoconf
+
+%build
 export CLASSPATH=
 export JAR=%jar
 %configure2_5x --disable-symlinks --with-arch-directory=%{_arch} \
@@ -268,8 +280,6 @@ export JAR=%jar
 touch --reference=aotcompile.py.in aotcompile.py
 
 %install
-rm -rf $RPM_BUILD_ROOT
-
 %makeinstall_std
 
 # extensions handling
@@ -421,9 +431,6 @@ EOF
 rm -f %{buildroot}%{_bindir}/aot-compile
 rm -f %{buildroot}%{_bindir}/rebuild-gcj-db
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 %post
 %{_sbindir}/update-alternatives \
   --install %{_bindir}/java java %{jrebindir}/java %{priority} \
@@ -529,7 +536,6 @@ fi
 %endif
 
 %files
-%defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING LICENSE README
 %dir %{_jvmdir}/%{sdkdir}
 %dir %{_jvmdir}/%{jredir}
@@ -618,7 +624,6 @@ fi
 %endif
 
 %files devel
-%defattr(-,root,root,-)
 %{_sysconfdir}/rpm/macros.d/%{name}.macros
 %dir %{_jvmdir}/%{sdkdir}/bin
 %dir %{_jvmdir}/%{sdkdir}/include
@@ -652,12 +657,10 @@ fi
 %{_jvmdir}/%{sdkdir}/lib/tools.jar
 
 %files src
-%defattr(-,root,root,-)
 %{_jvmdir}/%{sdkdir}/src.zip
 
 %if %without bootstrap
 %files javadoc
-%defattr(-,root,root,-)
 %doc %{_javadocdir}/%{name}
 # A JPackage that "provides" this directory will, in its %post script,
 # remove the existing directory and install a new symbolic link to its
@@ -671,7 +674,6 @@ fi
 
 %if %with plugin
 %files plugin
-%defattr(-,root,root,-)
 %endif
 
 
