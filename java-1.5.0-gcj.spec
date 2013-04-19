@@ -56,7 +56,7 @@ BuildRequires: gcj-tools
 BuildRequires: python-devel
 BuildRequires: java-rpmbuild
 %if %without bootstrap
-BuildRequires: java-1.6.0-openjdk-devel
+BuildRequires: java-1.7.0-openjdk-devel
 %endif
 BuildArch: noarch
 
@@ -140,7 +140,7 @@ Requires: fastjar
 
 %if %without bootstrap
 # For javadoc symlink
-Requires: java-1.6.0-openjdk-devel
+Requires: java-1.7.0-openjdk-devel
 %endif
 
 # standard JPackage devel provides
