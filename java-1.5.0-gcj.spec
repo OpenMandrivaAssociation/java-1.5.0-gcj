@@ -32,7 +32,7 @@
 
 Name:		java-%{javaver}-%{origin}
 Version:	%{javaver}.%{buildver}
-Release:	23
+Release:	24
 Summary:	JPackage runtime scripts for GCJ
 
 Group:		Development/Java
@@ -142,6 +142,8 @@ Requires: fastjar
 # For javadoc symlink
 Requires: java-1.7.0-openjdk-devel
 %endif
+# For java == gij symlink
+Requires: gcj-tools
 
 # standard JPackage devel provides
 Provides: java-sdk-%{javaver}-%{origin} = %{version}
