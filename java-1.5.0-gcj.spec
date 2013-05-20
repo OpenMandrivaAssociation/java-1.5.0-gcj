@@ -65,7 +65,7 @@ Requires:	bouncycastle
 # required for directory structures
 Requires:	jpackage-utils >= 1.7.3
 Requires(post,postun):	jpackage-utils
-Requires(post.postun):	update-alternatives >= 1.8.6
+Requires(post,postun):	update-alternatives >= 1.8.6
 
 # standard JPackage base provides
 Provides:	jre-%{javaver}-%{origin} = %{version}-%{release}
