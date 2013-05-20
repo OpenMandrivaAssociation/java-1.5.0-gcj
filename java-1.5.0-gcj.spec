@@ -29,10 +29,10 @@
 %define plugindir       %{_libdir}/mozilla/plugins
 %endif
 
-Release:	24
 Summary:	JPackage runtime scripts for GCJ
 Name:		java-%{javaver}-%{origin}
 Version:	%{javaver}.%{buildver}
+Release:	24
 Group:		Development/Java
 License:	GPLv2
 Url:		http://sources.redhat.com/rhug/java-gcj-compat.html
