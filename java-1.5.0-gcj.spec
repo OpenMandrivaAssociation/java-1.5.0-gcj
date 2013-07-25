@@ -53,7 +53,7 @@ BuildRequires:	openssl
 BuildRequires:	gcj-tools
 BuildRequires:	python-devel
 BuildRequires:	java-rpmbuild
-%if %without bootstrap
+%if !%with bootstrap
 BuildRequires:	java-1.7.0-openjdk-devel
 %endif
 BuildArch:	noarch
@@ -133,7 +133,7 @@ Requires:	gcc%{gccsuffix}-java
 Requires:	fastjar
 %endif
 
-%if %without bootstrap
+%if !%with bootstrap
 # For javadoc symlink
 Requires:	java-1.7.0-openjdk-devel
 %endif
@@ -155,7 +155,7 @@ Provides:	java-1.4.2-gcj-compat-devel = 1.4.2.0-41
 
 Obsoletes:	java-1.4.2-gcj-compat-devel < 1.4.2.0-41
 
-%if %without bootstrap
+%if !%with bootstrap
 Requires:	eclipse-ecj
 %else
 Requires:	ecj-bootstrap
@@ -181,7 +181,7 @@ Obsoletes:	java-1.4.2-gcj-compat-src < 1.4.2.0-41
 This package installs a versionless src.zip symlink that points to a
 specific version of the libgcj sources.
 
-%if %without bootstrap
+%if !%with bootstrap
 %package javadoc
 Summary:	API documentation for libgcj
 Group:		Development/Java
@@ -337,7 +337,7 @@ popd
 # classmap database directory
 install -dm 755 %{buildroot}%{_libdir}/gcj
 
-%if %without bootstrap
+%if !%with bootstrap
 # build and install API documentation
 install -dm 755 %{buildroot}%{_javadocdir}/%{name}
 pushd %{buildroot}%{_javadocdir}
@@ -658,7 +658,7 @@ fi
 %files src
 %{_jvmdir}/%{sdkdir}/src.zip
 
-%if %without bootstrap
+%if !%with bootstrap
 %files javadoc
 %doc %{_javadocdir}/%{name}
 # A JPackage that "provides" this directory will, in its %post script,
