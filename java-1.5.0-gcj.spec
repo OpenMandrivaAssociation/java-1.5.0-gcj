@@ -1,7 +1,7 @@
 # with => disabled by default
 # without => enabled by default
 
-%bcond_without bootstrap
+%bcond_with		bootstrap
 %bcond_with             plugin
 %bcond_with             fastjar
 
@@ -53,7 +53,7 @@ BuildRequires:	openssl
 BuildRequires:	gcj-tools
 BuildRequires:	python-devel
 BuildRequires:	java-rpmbuild
-%if !%with bootstrap
+%if !%{with bootstrap}
 BuildRequires:	java-1.7.0-openjdk-devel
 %endif
 BuildArch:	noarch
