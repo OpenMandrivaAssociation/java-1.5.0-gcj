@@ -1,7 +1,7 @@
 # with => disabled by default
 # without => enabled by default
 
-%bcond_with bootstrap
+%bcond_without bootstrap
 %bcond_with             plugin
 %bcond_with             fastjar
 
@@ -32,7 +32,7 @@
 Summary:	JPackage runtime scripts for GCJ
 Name:		java-%{javaver}-%{origin}
 Version:	%{javaver}.%{buildver}
-Release:	25
+Release:	26
 Group:		Development/Java
 License:	GPLv2
 Url:		http://sources.redhat.com/rhug/java-gcj-compat.html
