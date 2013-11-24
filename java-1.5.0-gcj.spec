@@ -51,7 +51,7 @@ BuildRequires:	libgcj%{gccsoversion}-src
 # required for cacerts generation
 BuildRequires:	openssl
 BuildRequires:	gcj-tools
-BuildRequires:	python-devel
+BuildRequires:	pkgconfig(python)
 BuildRequires:	java-rpmbuild
 %if !%{with bootstrap}
 BuildRequires:	java-1.7.0-openjdk-devel
