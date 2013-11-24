@@ -32,7 +32,7 @@
 Summary:	JPackage runtime scripts for GCJ
 Name:		java-%{javaver}-%{origin}
 Version:	%{javaver}.%{buildver}
-Release:	29
+Release:	30
 Group:		Development/Java
 License:	GPLv2
 Url:		http://sources.redhat.com/rhug/java-gcj-compat.html
