@@ -1,4 +1,4 @@
-# with => disabled by default 
+# with => disabled by default
 # without => enabled by default
 
 %bcond_with		bootstrap
@@ -7,7 +7,7 @@
 
 %define origin		gcj
 %define gccsuffix	%nil
-%define gccsoversion	14
+%define gccsoversion	13
 %define priority	1500
 %define	javaver		1.5.0
 %define buildver	0
@@ -32,7 +32,7 @@
 Summary:	JPackage runtime scripts for GCJ
 Name:		java-%{javaver}-%{origin}
 Version:	%{javaver}.%{buildver}
-Release:	34
+Release:	27
 Group:		Development/Java
 License:	GPLv2
 Url:		http://sources.redhat.com/rhug/java-gcj-compat.html
@@ -51,7 +51,7 @@ BuildRequires:	libgcj%{gccsoversion}-src
 # required for cacerts generation
 BuildRequires:	openssl
 BuildRequires:	gcj-tools
-BuildRequires:	pkgconfig(python)
+BuildRequires:	python-devel
 BuildRequires:	java-rpmbuild
 %if !%{with bootstrap}
 BuildRequires:	java-1.7.0-openjdk-devel
@@ -126,6 +126,7 @@ Requires:	python
 Requires(post):	update-alternatives >= 1.8.6
 # postun requires alternatives to uninstall tool alternatives
 Requires(postun):	update-alternatives
+BuildRequires:	python-devel
 Requires:	gcc%{gccsuffix}-java
 
 %if %with fastjar
