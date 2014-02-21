@@ -7,7 +7,7 @@
 
 %define origin		gcj
 %define gccsuffix	%nil
-%define gccsoversion	13
+%define gccsoversion	14
 %define priority	1500
 %define	javaver		1.5.0
 %define buildver	0
