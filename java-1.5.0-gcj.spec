@@ -126,7 +126,7 @@ Requires:	python
 Requires(post):	update-alternatives >= 1.8.6
 # postun requires alternatives to uninstall tool alternatives
 Requires(postun):	update-alternatives
-%py_requires -d
+BuildRequires:	python-devel
 Requires:	gcc%{gccsuffix}-java
 
 %if %with fastjar
