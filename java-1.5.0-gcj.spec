@@ -37,6 +37,7 @@ Group:		Development/Java
 License:	GPLv2
 Url:		http://sources.redhat.com/rhug/java-gcj-compat.html
 Source0:	ftp://sources.redhat.com/pub/rhug/java-gcj-compat-%{jgcver}.tar.gz
+Source1:        java-1.5.0-gcj.rpmlintrc
 Patch0:		java-1.4.2-gcj-compat-aot-compile-rpm.patch
 # Add only .so linked to correct libgcj_bc.so during rebuild-gcj-db,
 # to avoid gij failure with non-rebuilt packages
